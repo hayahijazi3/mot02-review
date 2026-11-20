@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MOT-02 Animation Summary — For Review</title>
+<style>
+  body { font-family: sans-serif; background: #1a1a1a; color: #eee; padding: 20px; max-width: 1100px; margin: 0 auto; }
+  h1 { text-align: center; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 24px; }
+  h2 { color: #ffd43b; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 6px; }
+  h3 { color: #69db7c; margin: 16px 0 8px; font-size: 15px; }
+
+  .pool { background: #2a2a2a; border-radius: 10px; padding: 14px; margin: 10px 0; }
+  .pool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .pool-name { font-size: 16px; font-weight: 700; color: #ffd43b; }
+  .pool-count { font-size: 12px; color: #888; }
+  .pool-desc { font-size: 12px; color: #888; margin-bottom: 10px; }
+  .anim-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .anim { padding: 5px 10px; border-radius: 6px; font-size: 12px; font-family: monospace; cursor: pointer; }
+  .anim:hover { opacity: 0.8; transform: scale(1.05); }
+  .anim.chosen { background: #69db7c; color: #000; }
+  .anim.new { background: #748ffc; color: #fff; }
+  .anim.broken { background: #ff6b6b; color: #000; text-decoration: line-through; cursor: not-allowed; }
+  .anim.ugly { background: #ffa94d; color: #000; }
+  .anim.available { background: #444; color: #aaa; }
+
+  .connect-bar { text-align: center; margin: 16px 0; padding: 12px; background: #2a2a2a; border-radius: 10px; }
+  .connect-bar input { padding: 8px 12px; font-size: 14px; border-radius: 8px; border: 1px solid #555; background: #333; color: #eee; width: 240px; text-align: center; }
+  .connect-bar button { padding: 8px 18px; font-size: 14px; border-radius: 8px; border: none; background: #ffd43b; color: #000; cursor: pointer; margin-left: 8px; font-weight: 600; }
+  .connect-bar button:hover { background: #ffe066; }
+  .connect-bar button.reset-btn { background: #555; color: #eee; }
+  #jibo-status { font-size: 13px; margin-top: 6px; color: #888; }
+
+  .legend { display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 12px; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 4px; }
+
+  .tab-bar { display: flex; gap: 4px; justify-content: center; margin: 20px 0; }
+  .tab { padding: 10px 24px; border: none; border-radius: 8px 8px 0 0; font-size: 14px; cursor: pointer; font-weight: 600; }
+  .tab.active { background: #2a2a2a; color: #ffd43b; }
+  .tab:not(.active) { background: #1a1a1a; color: #666; border: 1px solid #333; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .stats { text-align: center; color: #888; font-size: 13px; margin: 8px 0 20px; }
+
+  .comment { font-size: 11px; color: #ffa94d; margin-left: 4px; }
+</style>
+</head>
+<body>
+
+<h1>MOT-02 Animation Summary</h1>
+<p class="subtitle">Jibo emotion animations — what we chose, what we rejected, and what's available. Click any animation to play it on Jibo.</p>
+
+<div class="connect-bar">
+  <input id="jibo-host" type="text" placeholder="Jibo IP or hostname" value="192.168.101.183" />
+  <button onclick="connectJibo()">Connect</button>
+  <button class="reset-btn" onclick="playAnim('default')">Reset Jibo</button>
+  <div id="jibo-status">Enter Jibo IP and click Connect</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#69db7c"></div> Chosen (in code)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#748ffc"></div> New pool (MOT-02)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ff6b6b"></div> Broken</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ffa94d"></div> Ugly / Not suitable</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#444"></div> Available (not used)</div>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="tab-bar">
+  <button class="tab active" onclick="showTab('chosen')">What We Chose</button>
+  <button class="tab" onclick="showTab('rejected')">Rejected</button>
+  <button class="tab" onclick="showTab('available')">All Available</button>
+</div>
+
+<!-- TAB 1: CHOSEN -->
+<div class="tab-content active" id="tab-chosen">
+<h2>Final Emotion Pools (in code)</h2>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">praising</span><span class="pool-count">7 animations</span></div>
+  <div class="pool-desc">Victory, achievement, pride, accomplishment</div>
+  <div class="anim-list">
+    <span class="anim chosen">confident_01</span><span class="anim chosen">confident_02</span><span class="anim chosen">confident_03</span><span class="anim chosen">confident_04</span><span class="anim chosen">confident_05</span><span class="anim chosen">success_01</span><span class="anim chosen">success_02</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">excited</span><span class="pool-count">11 animations</span></div>
+  <div class="pool-desc">Pure joy, celebration, hope returning</div>
+  <div class="anim-list">
+    <span class="anim chosen">excited_00</span><span class="anim chosen">excited_01</span><span class="anim chosen">excited_02</span><span class="anim chosen">excited_03</span><span class="anim chosen">excited_04</span><span class="anim chosen">excited_05</span><span class="anim chosen">happy_03</span><span class="anim chosen">happy_04</span><span class="anim chosen">happy_05</span><span class="anim chosen">happy_06</span><span class="anim chosen">happy_07</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">sad</span><span class="pool-count">5 animations</span></div>
+  <div class="pool-desc">Loss, rejection, things going wrong</div>
+  <div class="anim-list">
+    <span class="anim chosen">sad_01</span><span class="anim chosen">Sad_03</span><span class="anim chosen">Sad_04</span><span class="anim chosen">Sad_05</span><span class="anim chosen">Sad_06</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">thinking</span><span class="pool-count">14 animations</span></div>
+  <div class="pool-desc">Processing, reflecting, waiting for GPT response</div>
+  <div class="anim-list">
+    <span class="anim chosen">Thinking_02</span><span class="anim chosen">Thinking_03</span><span class="anim chosen">Thinking_04</span><span class="anim chosen">Thinking_05</span><span class="anim chosen">Thinking_06</span><span class="anim new">thinking_00</span><span class="anim new">thinking_07</span><span class="anim new">thinking_08</span><span class="anim new">thinking_09</span><span class="anim new">thinking_10</span><span class="anim new">thinking_11</span><span class="anim new">thinking_12</span><span class="anim new">thinking_13</span><span class="anim new">thinking_14</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">surprised</span><span class="pool-count">7 animations</span></div>
+  <div class="pool-desc">Genuine unexpected twist</div>
+  <div class="anim-list">
+    <span class="anim new">surprised_00</span><span class="anim chosen">surprised_01</span><span class="anim chosen">surprised_02</span><span class="anim chosen">surprised_03</span><span class="anim chosen">surprised_04</span><span class="anim chosen">surprised_05</span><span class="anim chosen">surprised_06</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">worried</span><span class="pool-count">11 animations</span></div>
+  <div class="pool-desc">Fear, anxiety, danger</div>
+  <div class="anim-list">
+    <span class="anim chosen">worried_01</span><span class="anim chosen">worried_02</span><span class="anim chosen">worried_03</span><span class="anim chosen">worried_04</span><span class="anim chosen">scared_00</span><span class="anim chosen">scared_01</span><span class="anim chosen">scared_02</span><span class="anim chosen">scared_03</span><span class="anim new">quiver-01</span><span class="anim new">quiver-02</span><span class="anim new">quiver-03</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">warmth</span><span class="pool-count">6 animations</span></div>
+  <div class="pool-desc">Love, belonging, tenderness, comfort</div>
+  <div class="anim-list">
+    <span class="anim chosen">blush_01</span><span class="anim chosen">blush_02</span><span class="anim chosen">blush_03</span><span class="anim chosen">blush_04</span><span class="anim chosen">blush_06</span><span class="anim chosen">content_01</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">affection</span><span class="pool-count">6 animations</span></div>
+  <div class="pool-desc">Closeness, reunion, bonding</div>
+  <div class="anim-list">
+    <span class="anim new">affection_01</span><span class="anim new">affection_02</span><span class="anim new">affection_03</span><span class="anim chosen">affection_04</span><span class="anim chosen">affection_05</span><span class="anim chosen">affection_06</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">listening</span><span class="pool-count">6 animations</span></div>
+  <div class="pool-desc">Nods, acknowledgment while child speaks</div>
+  <div class="anim-list">
+    <span class="anim chosen">yep_01</span><span class="anim chosen">yep_02</span><span class="anim chosen">yep_03</span><span class="anim new">yep_04</span><span class="anim chosen">GotIt_02</span><span class="anim new">listen_head_bob_01</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">laughter</span><span class="pool-count">6 animations</span></div>
+  <div class="pool-desc">Funny or silly moments</div>
+  <div class="anim-list">
+    <span class="anim chosen">laughter_01</span><span class="anim chosen">laughter_02</span><span class="anim new">laughter_03</span><span class="anim new">laughter_04</span><span class="anim new">laughter_05</span><span class="anim new">laughter_06</span>
+  </div>
+</div>
+
+<h2>New Emotion Pools (added in MOT-02)</h2>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">disgusted</span><span class="pool-count">2 animations</span></div>
+  <div class="pool-desc">Gross, repulsive moments</div>
+  <div class="anim-list"><span class="anim new">disgusted_01</span><span class="anim new">disgusted_02</span></div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">frustrated</span><span class="pool-count">3 animations</span></div>
+  <div class="pool-desc">Struggling, things not working</div>
+  <div class="anim-list"><span class="anim new">frustrated_00</span><span class="anim new">frustrated_01</span><span class="anim new">frustrated_02</span></div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">confused</span><span class="pool-count">16 animations</span></div>
+  <div class="pool-desc">Bewilderment, "huh?", not understanding</div>
+  <div class="anim-list">
+    <span class="anim new">confused_01</span><span class="anim new">confused_02</span><span class="anim new">confused_03</span><span class="anim new">confused_04</span><span class="anim new">confused_04_nm</span><span class="anim new">confused_05</span><span class="anim new">confused_05_nm</span><span class="anim new">confused_06_nm</span><span class="anim new">confused_07_nm</span><span class="anim new">dont_understand_01</span><span class="anim new">dont_understand_02</span><span class="anim new">puzzled_01</span><span class="anim new">puzzled_02</span><span class="anim new">puzzled_03</span><span class="anim new">curious_01</span><span class="anim new">curious_02</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">nope</span><span class="pool-count">4 animations</span></div>
+  <div class="pool-desc">Refusal, denial, disagreement</div>
+  <div class="anim-list"><span class="anim new">nope_00</span><span class="anim new">nope_01</span><span class="anim new">nope_02</span><span class="anim new">nope_03</span></div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">exclamation</span><span class="pool-count">2 animations</span></div>
+  <div class="pool-desc">Shock, gasp, sudden reaction</div>
+  <div class="anim-list"><span class="anim new">exclamation_01</span><span class="anim new">exclamation_02</span></div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">relieved</span><span class="pool-count">2 animations</span></div>
+  <div class="pool-desc">Tension releasing, crisis averted</div>
+  <div class="anim-list"><span class="anim new">relieved_01</span><span class="anim new">relieved_02</span></div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">sorry</span><span class="pool-count">2 animations</span></div>
+  <div class="pool-desc">Guilt, regret, apologizing</div>
+  <div class="anim-list"><span class="anim new">sorry_01</span><span class="anim new">sorry_03</span></div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">shy</span><span class="pool-count">4 animations</span></div>
+  <div class="pool-desc">Embarrassment, bashfulness</div>
+  <div class="anim-list"><span class="anim new">shy_01</span><span class="anim new">shy_02</span><span class="anim new">embarassed_01</span><span class="anim new">embarassed_02</span></div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">lightbulb</span><span class="pool-count">5 animations</span></div>
+  <div class="pool-desc">Realization, "aha!" moment</div>
+  <div class="anim-list"><span class="anim new">thinking_lightbulb</span><span class="anim new">thinking_lightbulb_02</span><span class="anim new">thinking_lightbulb_03</span><span class="anim new">thinking_lightbulb_04</span><span class="anim new">thinking_lightbulb_05</span></div>
+</div>
+</div>
+
+<!-- TAB 2: REJECTED -->
+<div class="tab-content" id="tab-rejected">
+<h2>Broken (breaks screen/audio)</h2>
+<div class="pool">
+  <div class="anim-list">
+    <span class="anim broken">happy_01</span>
+    <span class="anim broken">happy_02</span>
+    <span class="anim broken">confident_01<span class="comment">now works, added to praising</span></span>
+    <span class="anim broken">sad_02<span class="comment">same as sad_01</span></span>
+    <span class="anim broken">Thinking_01</span>
+    <span class="anim broken">surprised_07</span>
+    <span class="anim broken">affection_01<span class="comment">displays heart on screen — now added anyway</span></span>
+    <span class="anim broken">Shy_01<span class="comment">now works, added to shy pool</span></span>
+    <span class="anim broken">greetings_04</span>
+  </div>
+</div>
+
+<h2>Ugly / Not suitable</h2>
+<div class="pool">
+  <div class="anim-list">
+    <span class="anim ugly">confident_05<span class="comment">not that nice — added anyway for variety</span></span>
+    <span class="anim ugly">Eye_Curious_01<span class="comment">only the eye moves</span></span>
+    <span class="anim ugly">Curious_01<span class="comment">only fits for asking question</span></span>
+    <span class="anim ugly">surprised_00<span class="comment">added to pool anyway</span></span>
+    <span class="anim ugly">Sway_01</span>
+  </div>
+</div>
+
+<h2>Notes from testing</h2>
+<div class="pool">
+  <div class="pool-desc">
+    <strong>Sneeze:</strong> sneeze_01, sneeze_02 — need to run reset after, lags on screen<br>
+    <strong>Happy Lucky:</strong> happy_lucky_00, happy_lucky_01 — animations are very long<br>
+    <strong>gotit_01:</strong> throws checkmark on screen<br>
+    <strong>question_04:</strong> pops question mark on screen<br>
+    <strong>listen_head_bob_01:</strong> needs cyan LED light when triggered<br>
+    <strong>eye_disgusted_01:</strong> has audio<br>
+    <strong>affection_01-03:</strong> 1 short, 2 med, 3 long<br>
+    <strong>tickle_head_01-02:</strong> laugh + audio<br>
+    <strong>Eye in/out:</strong> must use _in and _out in conjunction
+  </div>
+</div>
+</div>
+
+<!-- TAB 3: ALL AVAILABLE -->
+<div class="tab-content" id="tab-available">
+<h2>All Tested Animations (from AnimDB review)</h2>
+<p style="color:#888;font-size:13px;margin-bottom:16px;">Everything we found on Jibo and tested. Grouped by category.</p>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">Eye States (composable)</span></div>
+  <div class="anim-list">
+    <span class="anim available">eye_happy_00</span><span class="anim available">eye_happy_01</span><span class="anim available">eye_happy_02</span><span class="anim available">eye_happy_in_01</span><span class="anim available">eye_happy_out_00</span><span class="anim available">eye_happy_out_01</span>
+    <span class="anim available">eye_sad_01</span><span class="anim available">eye_sad_02</span><span class="anim available">eye_sad_in_00</span><span class="anim available">eye_sad_in_01</span><span class="anim available">eye_sad_out_01</span>
+    <span class="anim available">eye_scared_00</span><span class="anim available">eye_scared_01</span><span class="anim available">eye_scared_02</span><span class="anim available">eye_scared_in_01</span><span class="anim available">eye_scared_out_01</span>
+    <span class="anim available">eye_angry_in_01</span><span class="anim available">eye_angry_out_01</span><span class="anim available">eye_annoyed_in_01</span><span class="anim available">eye_annoyed_out_01</span>
+    <span class="anim available">eye_affection_in_01</span><span class="anim available">eye_affection_out_01</span>
+    <span class="anim available">eye_curious_01</span><span class="anim available">eye_curious_in_01</span><span class="anim available">eye_curious_out_01</span>
+    <span class="anim available">eye_thinking_01</span><span class="anim available">eye_thinking_02</span>
+    <span class="anim available">eye_surprised_in_01</span><span class="anim available">eye_surprised_out_01</span>
+    <span class="anim available">eye_disgusted_01</span><span class="anim available">eye_disgusted_02</span><span class="anim available">eye_disgust_in_01</span><span class="anim available">eye_disgust_out_01</span>
+    <span class="anim available">eye_tired_in_01</span><span class="anim available">eye_tired_out_01</span>
+    <span class="anim available">eye_unimpressed_bored_in_01</span><span class="anim available">eye_unimpressed_bored_out_01</span>
+    <span class="anim available">eye_laugh_in_00</span><span class="anim available">eye_laugh_out_01</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">Personality Sounds</span></div>
+  <div class="anim-list">
+    <span class="anim available">ei_mutter_03</span><span class="anim available">ei_um_01</span><span class="anim available">ei_purring_01</span><span class="anim available">ei_whistle_01</span>
+    <span class="anim available">ei_yawn_01</span><span class="anim available">ei_yawn_02</span><span class="anim available">ei_yawn_03</span><span class="anim available">ei_yawn_04</span><span class="anim available">ei_yawn_05</span>
+    <span class="anim available">yawn_01</span><span class="anim available">yawn_02</span><span class="anim available">yawn_03</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">Greetings / Goodbye</span></div>
+  <div class="anim-list">
+    <span class="anim available">greetings_01</span><span class="anim available">greetings_02</span><span class="anim available">greetings_03</span><span class="anim broken">greetings_04</span><span class="anim available">greetings_05</span><span class="anim available">greetings_06</span><span class="anim available">greetings_07</span><span class="anim available">greetings_08</span><span class="anim chosen">greetings_09</span>
+    <span class="anim available">goodbye_04</span><span class="anim available">goodbye_05</span><span class="anim available">goodbye_06</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">Listening / Engagement</span></div>
+  <div class="anim-list">
+    <span class="anim available">listen_head_bob_01</span><span class="anim available">engaged-02</span><span class="anim available">engaged-04</span><span class="anim available">engaged-05</span>
+    <span class="anim available">disengaged-01</span><span class="anim available">disengaged-02</span><span class="anim available">disengaged-04</span><span class="anim available">disengaged-05</span><span class="anim available">disengaged-eye-01</span>
+    <span class="anim available">initiation_01</span><span class="anim available">initiation_02</span><span class="anim available">initiation_03</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">Checking / Questions</span></div>
+  <div class="anim-list">
+    <span class="anim available">checking_00</span><span class="anim available">checking_00_02</span><span class="anim available">checking_01</span><span class="anim available">checking_02</span><span class="anim available">checking_03</span><span class="anim available">checking_04</span><span class="anim available">checking_05</span><span class="anim available">checking_06</span><span class="anim available">checking_07</span><span class="anim available">checking_08</span>
+    <span class="anim available">question_02</span><span class="anim available">question_03</span><span class="anim available">question_04</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">Nods / Acknowledgment</span></div>
+  <div class="anim-list">
+    <span class="anim available">yep_04</span><span class="anim available">gotit_01</span><span class="anim available">youre_welcome_01</span><span class="anim available">youre_welcome_02</span>
+  </div>
+</div>
+
+<div class="pool">
+  <div class="pool-header"><span class="pool-name">Head Touch / Fun</span></div>
+  <div class="anim-list">
+    <span class="anim available">tickle_head_01</span><span class="anim available">tickle_head_02</span>
+    <span class="anim available">sneeze_01</span><span class="anim available">sneeze_02</span>
+    <span class="anim available">happy_lucky_00</span><span class="anim available">happy_lucky_01</span>
+  </div>
+</div>
+
+</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Stats
+var chosen = document.querySelectorAll('#tab-chosen .anim.chosen, #tab-chosen .anim.new').length;
+var broken = document.querySelectorAll('#tab-rejected .anim.broken').length;
+var ugly = document.querySelectorAll('#tab-rejected .anim.ugly').length;
+var pools = document.querySelectorAll('#tab-chosen .pool').length;
+document.getElementById('stats').textContent = pools + ' emotion pools · ' + chosen + ' animations chosen · ' + broken + ' broken · ' + ugly + ' rejected';
+
+// Jibo MCP connection
+var mcpUrl = '';
+var sessionId = null;
+var mcpId = 1;
+var statusEl = document.getElementById('jibo-status');
+
+function connectJibo() {
+  var host = document.getElementById('jibo-host').value.trim();
+  if (!host) { alert('Enter Jibo IP'); return; }
+  // Try port 9011 first (new), then 9010 (old)
+  tryConnect(host, 9011, function() {
+    tryConnect(host, 9010, function() {
+      statusEl.textContent = 'Failed to connect on port 9011 or 9010';
+      statusEl.style.color = '#ff6b6b';
+    });
+  });
+}
+
+function tryConnect(host, port, onFail) {
+  var url = 'http://' + host + ':' + port + '/mcp';
+  statusEl.textContent = 'Trying ' + host + ':' + port + '...';
+  statusEl.style.color = '#ffd43b';
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: mcpId++, method: 'initialize', params: {} })
+  }).then(function(r) {
+    sessionId = r.headers.get('Mcp-Session-Id');
+    if (sessionId) {
+      mcpUrl = url;
+      statusEl.textContent = 'Connected to ' + host + ':' + port;
+      statusEl.style.color = '#69db7c';
+    } else { onFail(); }
+  }).catch(function() { onFail(); });
+}
+
+function playAnim(name) {
+  if (!sessionId) { statusEl.textContent = 'Not connected — click Connect first'; statusEl.style.color = '#ff6b6b'; return; }
+  statusEl.textContent = 'Playing: ' + name + '...';
+  statusEl.style.color = '#ffd43b';
+  fetch(mcpUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Mcp-Session-Id': sessionId },
+    body: JSON.stringify({ jsonrpc: '2.0', id: mcpId++, method: 'tools/call', params: { name: 'play_motion', arguments: { name: name } } })
+  }).then(function(r) { return r.json(); }).then(function(r) {
+    var text = r.result && r.result.content && r.result.content[0] ? r.result.content[0].text : JSON.stringify(r);
+    statusEl.textContent = text;
+    statusEl.style.color = '#69db7c';
+  }).catch(function(e) {
+    statusEl.textContent = 'Error: ' + e.message;
+    statusEl.style.color = '#ff6b6b';
+  });
+}
+
+// Make all .anim spans clickable (except broken)
+document.querySelectorAll('.anim').forEach(function(el) {
+  if (el.classList.contains('broken')) return;
+  el.addEventListener('click', function() {
+    var name = el.textContent.trim().split('\n')[0].trim();
+    playAnim(name);
+  });
+});
+</script>
+
+</body>
+</html>
